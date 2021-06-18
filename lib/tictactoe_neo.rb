@@ -43,20 +43,26 @@ class Game
         current_player == p1 ? self.current_player = p2 : self.current_player = p1
     end
 
-    def take_turn
-        input = nil
+    def take_turn(input = get_player_input)
+        #input = nil
         
-        display_board
+        #display_board
         loop do
-            input = get_player_input
-            break if verify_input(input)
+        #    input = get_player_input
+        #    break if verify_input(input)
+            verify_input(input) ? break : input = get_player_input
+            puts "Please try again."
         end
+
+
 
         #Convert to Integer to be used with the squares array in Board
         board.mark_square(input.to_i, current_player.mark)
     end
   
     def get_player_input
+        #let the player see what the board is like so they can make an informated choice
+        display_board
         puts "#{current_player.mark}, please select a square using 1 to 9:"
         gets.chomp
     end
@@ -64,9 +70,9 @@ class Game
     #for both regex validation as well as checking for already claimed squares
     def verify_input(input)
         if !(input.match?(/^[1-9]$/))
-            puts "This is not a valid input."
+            print "This is not a valid input. "
         elsif !(board.squares[input.to_i-1] == ' ')
-            puts "This square is taken already."
+            print "This square is taken already. "
         else
             input
         end
@@ -115,6 +121,3 @@ class Game
         board.show
     end
 end
-
-game = Game.new(Board.new, Player.new, Player.new)
-game.start
