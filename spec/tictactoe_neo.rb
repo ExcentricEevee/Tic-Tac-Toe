@@ -159,28 +159,31 @@ describe Game do
             end
         end
 
-        #this one needs work
         context 'when the board is full but has a winner' do
-            let(:player1) { instance_double('Player', name: 'Fira', mark: 'X', score: 10) }
-            let(:player2) { instance_double('Player', name: 'Ashie', mark: 'O', score: 1) }
-            subject(:winning_game) { described_class.new(board, player1, player2) }
+            let(:winning_board) { Board.new }
+            let(:game) { described_class.new(winning_board, p1, p2) }
 
-            it 'should end the game with a player gaining 1 point' do
-                winning_game.current_player = player1
-                allow(board).to receive(:full?).and_return(true)
-                allow(board).to receive(:game_over?).and_return(true)
-                allow(winning_game).to receive(:display_board)
-                allow(winning_game).to receive(:puts)
-
-                expect { winning_game.check_for_tie }.to change { player1.score }.by_at_most(1)
+            it 'should call #game_win' do
+                allow(winning_board).to receive(:full?).and_return(true)
+                allow(winning_board).to receive(:game_over?).and_return(true)
+                expect(game).to receive(:game_win)
+                game.check_for_tie
             end
         end
     end
 
     describe '#game_win' do
         context 'when a player wins' do
-            it 'should increase their score by exactly one' do
-                #in progress...
+            let(:player) { instance_double('Player', name: 'Kinus', mark: 'X', score: 0) }
+            subject(:game) { described_class.new(board, player, p2) }
+
+            #need to figure out how to get :score= to work
+            xit 'should increase their score by exactly one' do
+                game.current_player = player
+                current_score = game.current_player.instance_variable_get(:@score)
+                allow(game).to receive(:display_board)
+                allow(game).to receive(:puts)
+                expect { game.game_win }.to change { current_score }.by(1)
             end
         end
     end

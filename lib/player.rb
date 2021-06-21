@@ -17,5 +17,7 @@ class Player
       self.mark = mark
     end
 
-    #expect a method for updating score on win
+    def update_score
+      self.score += 1
+    end
   end

@@ -93,7 +93,7 @@ class Game
     def game_win
         display_board
         puts "It looks like #{current_player.name} has won! You get a fancy point."
-        current_player.score += 1
+        current_player.update_score
         show_score
         play_again
     end
